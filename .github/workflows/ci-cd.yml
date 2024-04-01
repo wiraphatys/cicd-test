@@ -78,14 +78,6 @@ jobs:
       with:
         node-version: '18.x'
     
-    - name: Install dependencies
-      run: npm install
-        
-    - name: Clean install dependencies
-      run: |
-        rm -rf node_modules
-        npm ci
-        
     - name: Deploy to production
       env:
         VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
