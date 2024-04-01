@@ -1,4 +1,4 @@
-name: CI/CD
+name: CI/CD_Frontend
 
 on:
   push:
@@ -29,18 +29,12 @@ jobs:
         npm install uuid@latest
         npm install debug@latest
         
-    - name: Build backend
-      run: |
-        cd backend
-        npm ci
-        npm run build
-        
     - name: Build frontend
       run: |
         cd frontend
         npm ci
         npm run build
-        
+
   test:
     runs-on: ubuntu-latest
     
@@ -50,15 +44,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '18.x'
-        
-    # - name: Fix vulnerabilities
-    #   run: npm audit fix
-        
-    # - name: Test backend
-    #   run: |
-    #     cd backend
-    #     npm ci
-    #     npm test
         
     - name: Test frontend
       run: |
@@ -74,9 +59,11 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
+      - name: Change Directory to frontend
+        run: cd frontend
       - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN_FRONTEND }}
       - name: Build Project Artifacts
-        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN_FRONTEND }}
       - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN_FRONTEND }}
