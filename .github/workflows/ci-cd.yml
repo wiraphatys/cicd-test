@@ -51,8 +51,8 @@ jobs:
       with:
         node-version: '18.x'
         
-    - name: Fix vulnerabilities
-      run: npm audit fix
+    # - name: Fix vulnerabilities
+    #   run: npm audit fix
         
     # - name: Test backend
     #   run: |
