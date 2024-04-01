@@ -16,11 +16,18 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
-    
     - name: Use Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '18.x'
+
+    - name: Clear npm cache
+      run: npm cache clean --force
+        
+    - name: Update packages
+      run: |
+        npm install uuid@latest
+        npm install debug@latest
         
     - name: Build backend
       run: |
@@ -30,7 +37,7 @@ jobs:
         
     - name: Build frontend
       run: |
-        cd frontend  
+        cd frontend
         npm ci
         npm run build
         
@@ -39,11 +46,13 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
-        
     - name: Use Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '18.x'
+        
+    - name: Fix vulnerabilities
+      run: npm audit fix
         
     # - name: Test backend
     #   run: |
@@ -54,7 +63,7 @@ jobs:
     - name: Test frontend
       run: |
         cd frontend
-        npm ci  
+        npm ci
         npm test
         
   deploy:
@@ -63,6 +72,16 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+        
+    - name: Clean install dependencies
+      run: |
+        rm -rf node_modules
+        npm ci
         
     - name: Deploy to production
       env:
